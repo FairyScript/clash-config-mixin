@@ -41,9 +41,12 @@ http.createServer(async (request, response) => {
       const originCfg = await subRes.text();
       const addonCfg = await addonRes.text();
 
-      const originFileName = subRes.headers.get('content-disposition') ?
-        originFileName.replace('.yaml', '-mixin.yaml') :
-        'attachment; filename=mixin.yaml';
+      let originFileName = subRes.headers.get('content-disposition');
+      if (originFileName) {
+        originFileName.replace('.yaml', '-mixin.yaml');
+      } else {
+        originFileName = 'attachment; filename=mixin.yaml';
+      }
 
       response.statusCode = 200;
       response.setHeader('Content-Type', 'application/octet-stream; charset=UTF-8');
