@@ -5,9 +5,9 @@ import http from 'http';
 
 const port = process.env.PORT || 3000;
 
-function mergeSub(origin, mixin) {
-  const originConfig = yaml.parse(origin);
-  const addonConfig = yaml.parse(mixin);
+function mergeSub(target, source) {
+  const originConfig = yaml.parse(target);
+  const addonConfig = yaml.parse(source);
   const result = mergeDeep(originConfig, addonConfig);
 
   return yaml.stringify(result);
@@ -51,7 +51,7 @@ http.createServer(async (request, response) => {
       response.statusCode = 200;
       response.setHeader('Content-Type', 'application/octet-stream; charset=UTF-8');
       response.setHeader("Content-disposition", originFileName);
-      response.write(mergeSub(originCfg, addonCfg));
+      response.write(mergeSub(addonCfg, originCfg));
       response.end();
 
     } catch (e) {
