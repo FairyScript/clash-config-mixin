@@ -3,6 +3,8 @@ import fetch from 'node-fetch';
 import mergeDeep from 'merge-deep';
 import http from 'http';
 
+const port = process.env.PORT || 3000;
+
 function mergeSub(origin, mixin) {
   const originConfig = yaml.parse(origin);
   const addonConfig = yaml.parse(mixin);
@@ -63,7 +65,7 @@ http.createServer(async (request, response) => {
     }
   }
 
-}).listen(5005);
+}).listen(port);
 
 //Error
 class ParamInvalidError extends Error {
