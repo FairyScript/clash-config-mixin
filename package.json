@@ -1,0 +1,14 @@
+{
+  "name": "clash-config-mixin",
+  "version": "1.0.0",
+  "description": "clash profile mixin tool",
+  "main": "index.js",
+  "type": "module",
+  "author": "FairyScript",
+  "license": "MIT",
+  "dependencies": {
+    "merge-deep": "^3.0.3",
+    "node-fetch": "^2.6.1",
+    "yaml": "^1.10.0"
+  }
+}
