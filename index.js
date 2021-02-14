@@ -5,10 +5,20 @@ import http from 'http';
 
 const port = process.env.PORT || 3000;
 
-function mergeSub(target, source) {
-  const originConfig = yaml.parse(target);
-  const addonConfig = yaml.parse(source);
-  const result = mergeDeep(originConfig, addonConfig);
+function mergeSub(origin, addon) {
+  const originConfig = yaml.parse(origin);
+  const addonConfig = yaml.parse(addon);
+  let result = mergeDeep(originConfig, addonConfig);
+
+  //replace dns
+  if(addonConfig.dns) {
+    result.dns = addonConfig.dns;
+  }
+
+  //unshift rules
+  if(addonConfig.rules) {
+    result.rules = addonConfig.rules.concat(originConfig.rules);
+  }
 
   return yaml.stringify(result);
 }
@@ -51,7 +61,7 @@ http.createServer(async (request, response) => {
       response.statusCode = 200;
       response.setHeader('Content-Type', 'application/octet-stream; charset=UTF-8');
       response.setHeader("Content-disposition", originFileName);
-      response.write(mergeSub(addonCfg, originCfg));
+      response.write(mergeSub(originCfg,addonCfg));
       response.end();
 
     } catch (e) {
